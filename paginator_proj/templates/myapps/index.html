@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paginator</title>
+</head>
+<body>
+    <h2>Welcome to Django Paginator Class Page</h2>
+
+    {% for item in items %}
+    {{ item.name }}<br />
+    {% endfor %}
+
+    {% if items.has_previous %}
+    <a href="{% url 'index' %}?page={{items.previous_page_number}}">Previous Page</a>
+    {% endif %}
+
+    {% if items.has_next %}
+    <a href="{% url 'index' %}?page={{items.next_page_number}}">Next Page</a>
+    {% endif %}
+</body>
+</html>

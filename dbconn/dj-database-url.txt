@@ -1,0 +1,271 @@
+Skip to content
+Navigation Menu
+Product
+Solutions
+Resources
+Open Source
+Enterprise
+Pricing
+
+Sign in
+Sign up
+jazzband
+/
+dj-database-url
+Public
+Code
+Issues
+4
+Pull requests
+4
+Actions
+Projects
+Security
+Insights
+jazzband/dj-database-url
+Go to file
+Folders and files
+Name		
+Latest commit
+pre-commit-ci[bot]
+pre-commit-ci[bot]
+[pre-commit.ci] pre-commit autoupdate (#249)
+3aad9ad
+ · 
+2 months ago
+History
+.github/workflows
+Update django 5.0 python compatability (#239)
+8 months ago
+dj_database_url
+Check list of schemes to determine if search_path option should be …
+6 months ago
+tests
+Enhance Query String Parsing for Server-Side Binding in Django 4.2 wi…
+8 months ago
+.flake8
+Redo as a package to fix mypy issues (#215)
+last year
+.gitignore
+👷 moving to github ci
+5 years ago
+.isort.cfg
+Add isort base config file (.isort.cfg)
+2 years ago
+.pre-commit-config.yaml
+[pre-commit.ci] pre-commit autoupdate (#249)
+2 months ago
+CHANGELOG.md
+Update CHANGELOG.md
+last year
+CODE_OF_CONDUCT.md
+Add jazzband code of conduct file
+3 years ago
+CONTRIBUTING.md
+Add default contributing.md file
+3 years ago
+LICENSE
+[pre-commit.ci] auto fixes from pre-commit.com hooks
+2 years ago
+README.rst
+Update README.rst (#247)
+3 months ago
+pyproject.toml
+Add type hints (#198)
+2 years ago
+requirements.txt
+Add type hints (#198)
+2 years ago
+setup.py
+Update setup.py
+3 months ago
+Repository files navigation
+README
+Code of conduct
+BSD-3-Clause license
+Security
+DJ-Database-URL
+Jazzband  https://codecov.io/gh/jazzband/dj-database-url/branch/master/graph/badge.svg?token=7srBUpszOa
+This simple Django utility allows you to utilize the 12factor inspired DATABASE_URL environment variable to configure your Django application.
+
+The dj_database_url.config method returns a Django database connection dictionary, populated with all the data specified in your URL. There is also a conn_max_age argument to easily enable Django's connection pool.
+
+If you'd rather not use an environment variable, you can pass a URL in directly instead to dj_database_url.parse.
+
+Supported Databases
+Support currently exists for PostgreSQL, PostGIS, MySQL, MySQL (GIS), Oracle, Oracle (GIS), Redshift, CockroachDB, Timescale, Timescale (GIS) and SQLite.
+
+Installation
+Installation is simple:
+
+$ pip install dj-database-url
+Usage
+If DATABASES is already defined:
+Configure your database in settings.py from DATABASE_URL:
+
+import dj_database_url
+
+DATABASES['default'] = dj_database_url.config(
+    conn_max_age=600,
+    conn_health_checks=True,
+)
+Provide a default:
+
+DATABASES['default'] = dj_database_url.config(
+    default='postgres://...',
+    conn_max_age=600,
+    conn_health_checks=True,
+)
+Parse an arbitrary Database URL:
+
+DATABASES['default'] = dj_database_url.parse(
+    'postgres://...',
+    conn_max_age=600,
+    conn_health_checks=True,
+)
+If DATABASES is not defined:
+Configure your database in settings.py from DATABASE_URL:
+
+import dj_database_url
+
+DATABASES = {
+    'default': dj_database_url.config(
+        conn_max_age=600,
+        conn_health_checks=True,
+    ),
+}
+You can provide a default, used if the DATABASE_URL setting is not defined:
+
+DATABASES = {
+    'default': dj_database_url.config(
+        default='postgres://...',
+        conn_max_age=600,
+        conn_health_checks=True,
+    )
+}
+Parse an arbitrary Database URL:
+
+DATABASES = {
+    'default': dj_database_url.parse(
+        'postgres://...',
+        conn_max_age=600,
+        conn_health_checks=True,
+    )
+}
+conn_max_age sets the CONN_MAX_AGE setting, which tells Django to persist database connections between requests, up to the given lifetime in seconds. If you do not provide a value, it will follow Django’s default of 0. Setting it is recommended for performance.
+
+conn_health_checks sets the CONN_HEALTH_CHECKS setting (new in Django 4.1), which tells Django to check a persisted connection still works at the start of each request. If you do not provide a value, it will follow Django’s default of False. Enabling it is recommended if you set a non-zero conn_max_age.
+
+Strings passed to dj_database_url must be valid URLs; in particular, special characters must be url-encoded. The following url will raise a ValueError:
+
+postgres://user:p#ssword!@localhost/foobar
+and should instead be passed as:
+
+postgres://user:p%23ssword!@localhost/foobar
+TEST settings can be configured using the test_options attribute:
+
+DATABASES['default'] = dj_database_url.config(default='postgres://...', test_options={'NAME': 'mytestdatabase'})
+URL schema
+Engine	Django Backend	URL
+PostgreSQL	django.db.backends.postgresql [1]	postgres://USER:PASSWORD@HOST:PORT/NAME [2] postgresql://USER:PASSWORD@HOST:PORT/NAME
+PostGIS	django.contrib.gis.db.backends.postgis	postgis://USER:PASSWORD@HOST:PORT/NAME
+MSSQL	sql_server.pyodbc	mssql://USER:PASSWORD@HOST:PORT/NAME
+MSSQL [5]	mssql	mssqlms://USER:PASSWORD@HOST:PORT/NAME
+MySQL	django.db.backends.mysql	mysql://USER:PASSWORD@HOST:PORT/NAME [2]
+MySQL (GIS)	django.contrib.gis.db.backends.mysql	mysqlgis://USER:PASSWORD@HOST:PORT/NAME
+SQLite	django.db.backends.sqlite3	sqlite:///PATH [3]
+SpatiaLite	django.contrib.gis.db.backends.spatialite	spatialite:///PATH [3]
+Oracle	django.db.backends.oracle	oracle://USER:PASSWORD@HOST:PORT/NAME [4]
+Oracle (GIS)	django.contrib.gis.db.backends.oracle	oraclegis://USER:PASSWORD@HOST:PORT/NAME
+Redshift	django_redshift_backend	redshift://USER:PASSWORD@HOST:PORT/NAME
+CockroachDB	django_cockroachdb	cockroach://USER:PASSWORD@HOST:PORT/NAME
+Timescale [6]	timescale.db.backends.postgresql	timescale://USER:PASSWORD@HOST:PORT/NAME
+Timescale (GIS) [6]	timescale.db.backend.postgis	timescalegis://USER:PASSWORD@HOST:PORT/NAME
+[1]	The django.db.backends.postgresql backend is named django.db.backends.postgresql_psycopg2 in older releases. For backwards compatibility, the old name still works in newer versions. (The new name does not work in older versions).
+[2]	(1, 2) With PostgreSQL or CloudSQL, you can also use unix domain socket paths with percent encoding: postgres://%2Fvar%2Flib%2Fpostgresql/dbname mysql://uf07k1i6d8ia0v@%2fcloudsql%2fproject%3alocation%3ainstance/dbname
+[3]	(1, 2) SQLite connects to file based databases. The same URL format is used, omitting the hostname, and using the "file" portion as the filename of the database. This has the effect of four slashes being present for an absolute file path: sqlite:////full/path/to/your/database/file.sqlite.
+[4]	Note that when connecting to Oracle the URL isn't in the form you may know from using other Oracle tools (like SQLPlus) i.e. user and password are separated by : not by /. Also you can omit HOST and PORT and provide a full DSN string or TNS name in NAME part.
+[5]	Microsoft official mssql-django adapter.
+[6]	(1, 2) Using the django-timescaledb Package which must be installed.
+Contributing
+We welcome contributions to this project. Projects can take two forms:
+
+Raising issues or helping others through the github issue tracker.
+Contributing code.
+Raising Issues or helping others:
+When submitting an issue or helping other remember you are talking to humans who have feelings, jobs and lives of their own. Be nice, be kind, be polite. Remember english may not be someone first language, if you do not understand or something is not clear be polite and re-ask/ re-word.
+
+Contributing code:
+Before writing code be sure to check existing PR's and issues in the tracker.
+Write code to the pylint spec.
+Large or wide sweeping changes will take longer, and may face more scrutiny than smaller confined changes.
+Code should be pass black and flake8 validation.
+About
+Use Database URLs in your Django Application.
+
+pypi.org/project/dj-database-url/
+Resources
+ Readme
+License
+ BSD-3-Clause license
+Code of conduct
+ Code of conduct
+Security policy
+ Security policy
+ Activity
+ Custom properties
+Stars
+ 1.5k stars
+Watchers
+ 34 watching
+Forks
+ 203 forks
+Report repository
+Releases 7
+v2.2.0
+Latest
+on May 28
++ 6 releases
+Sponsor this project
+https://jazzband.co/donate
+Used by 278k
+@PrajinKhatiwada
+@fatimagama20
+@vinyas-bharadwaj
+@jackkweyunga
+@RejoiceHart
+@ryofac
+@Githerd
+@Oluwapelumi99
++ 278,379
+Contributors
+68
+@kennethreitz
+@mattseymour
+@pre-commit-ci[bot]
+@palfrey
+@jacobian
+@jezdez
+@timgraham
+@loisaidasam
+@sigmavirus24
+@adamchainz
+@johntellsall
+@j4mie
+@mwarkentin
+@eisensheng
++ 54 contributors
+Languages
+Python
+100.0%
+Footer
+© 2024 GitHub, Inc.
+Footer navigation
+Terms
+Privacy
+Security
+Status
+Docs
+Contact
+Manage cookies
+Do not share my personal information

@@ -1,0 +1,57 @@
+
+>>> from model.models import Simple 
+>>> Simple.objects.filter(id=1)     
+<QuerySet [<Simple: http://www.facebook.com>]>
+>>> Simple.objects.filter(id__exact=1) 
+<QuerySet [<Simple: http://www.facebook.com>]>
+>>> Simple.objects.filter(text__exact='four') 
+<QuerySet []>
+>>> Simple.objects.filter(text__exact=4)      
+<QuerySet []>
+>>> Simple.objects.filter(text__exact='facebook') 
+<QuerySet []>
+>>> Simple.objects.filter(text__exact='google')   
+<QuerySet []>
+>>> Simple.objects.filter(text__iexact='google') 
+<QuerySet []>
+>>> Simple.objects.filter(text__contains='oogle')  
+<QuerySet [<Simple: http://www.google.com>]>
+>>> Simple.objects.filter(text__contains='Oogle') 
+<QuerySet [<Simple: http://www.google.com>]>
+>>> Simple.objects.filter(text__contains='OGLE')  
+<QuerySet [<Simple: http://www.google.com>]>
+>>> Simple.objects.filter(text__contains='gm')   
+<QuerySet []>
+>>> Simple.objects.filter(text__contains='grm')  
+<QuerySet []>
+>>> Simple.objects.filter(text__contains='gram') 
+<QuerySet [<Simple: http://www.instagram.com>]>
+>>> Simple.objects.filter(text__contains='five') 
+<QuerySet []>
+>>> Simple.objects.filter(text__contains='fb')   
+<QuerySet []>
+>>> Simple.objects.filter(text__contains='fbook') 
+<QuerySet []>
+>>> Simple.objects.filter(text__contains='book')  
+<QuerySet [<Simple: http://www.facebook.com>]>
+>>> Simple.objects.filter(text__icontains='fb')   
+<QuerySet []>
+>>> Simple.objects.filter(id__in=[1,3])         
+<QuerySet [<Simple: http://www.facebook.com>, <Simple: http://www.youtube.com>]>
+>>> Simple.objects.filter(id__in=[1,10]) 
+<QuerySet [<Simple: http://www.facebook.com>, <Simple: http://www.tiktok.com>]>
+>>> Simple.objects.filter(id__gt=5)      
+<QuerySet [<Simple: http://www.microsoft.com>, <Simple: http://www.instagram.com>, <Simple: http://www.twitter.com>, <Simple: http://www.amazon.com>, <Simple: http://www.tiktok.com>]>
+>>> Simple.objects.filter(id__gte=5) 
+<QuerySet [<Simple: http://www.apple.com>, <Simple: http://www.microsoft.com>, <Simple: http://www.instagram.com>, <Simple: http://www.twitter.com>, <Simple: http://www.amazon.com>, <Simple: http://www.tiktok.com>]>
+>>> Simple.objects.filter(text__startswith='f') 
+<QuerySet []>
+>>> Simple.objects.filter(text__startswith='face') 
+<QuerySet []>
+>>> Simple.objects.filter(text__startswith='h')    
+<QuerySet [<Simple: http://www.facebook.com>, <Simple: http://www.google.com>, <Simple: http://www.youtube.com>, <Simple: http://www.github.com>, <Simple: http://www.apple.com>, <Simple: http://www.microsoft.com>, <Simple: http://www.instagram.com>, <Simple: http://www.twitter.com>, <Simple: http://www.amazon.com>, <Simple: http://www.tiktok.com>]>
+>>> Simple.objects.filter(text__isnull=True) 
+<QuerySet []>
+>>> Simple.objects.filter(text__isnull=False) 
+<QuerySet [<Simple: http://www.facebook.com>, <Simple: http://www.google.com>, <Simple: http://www.youtube.com>, <Simple: http://www.github.com>, <Simple: http://www.apple.com>, <Simple: http://www.microsoft.com>, <Simple: http://www.instagram.com>, <Simple: http://www.twitter.com>, <Simple: http://www.amazon.com>, <Simple: http://www.tiktok.com>]>
+>>>

@@ -1,0 +1,31 @@
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>humanize</title>
+</head>
+<body>
+
+    <h1>humanize demo</h1>
+    <h2>Spell: {{ first|apnumber }}</h2>
+    <h2>Spell: {{ second|apnumber }}</h2>
+    <h2>Spell: {{ second|intword }}</h2>
+    <h2>Spell: {{ second|intcomma }}</h2>
+    <h2>ordinal: {{ fourth|ordinal }}</h2>
+    <h2>now: {{ now }}</h2>
+    <h2>tomorrow: {{ tomorrow }}</h2>
+    <h2>Previous Day: {{ prevdays }}</h2>
+    <h2>future: {{ future }}</h2>
+    <h2>future: {{ future|naturaltime }}</h2>
+    <h2>prevdays: {{ prevdays|naturaltime }}</h2>
+
+
+
+
+
+
+
+</body>
+</html>

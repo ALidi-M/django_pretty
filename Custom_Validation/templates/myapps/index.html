@@ -1,0 +1,45 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validation</title>
+</head>
+<body>
+    <form method="POST" >
+        {% csrf_token %}
+        <div class="field">
+            <div class="control">
+                {{ form.test_value }}
+                {% for error in form.test_value.errors %}
+                <p class="help is-danger">{{ error }}</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="field">
+            <div class="control">
+                {{ form.test_anagram }}
+                {% for error in form.test_anagram.errors %}
+                <p class="help is-danger">{{ error }}</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        {% if form.non_field_errors %}
+        <div class="field">
+            <div class="control">
+                {% for error in form.non_field_errors %}
+                <p class="help is-danger">{{ error }}</p>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="control">
+            <button class="button is-link">Submit</button>
+        </div>
+    </form>
+</body>
+</html>

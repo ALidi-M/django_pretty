@@ -1,0 +1,184 @@
+
+>>> from model_relationsapp.models import Language,Framework 
+>>> python = Language(name='python')
+>>> python.savee()
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+AttributeError: 'Language' object has no attribute 'savee'
+>>> python.save()  
+>>> django = Framework(name='Django') 
+>>> flask = Framework(name='Flask') 
+>>> django.language= python
+>>> flask.language = python
+>>> bottle = Framework(name='Bottle',language=python) 
+>>> django.save()
+>>> flask.save()
+>>> bottle.save()
+>>> java = Language(name='Java') 
+>>> spring = Framework(name='Spring',language=java)   
+>>> java.save()
+>>> 
+>>> spring.save() 
+>>> 
+
+
+ from model_relationsapp.models import Language,Framework
+>>> Framework.objects.all()
+<QuerySet [<Framework: Django>, <Framework: Flask>, <Framework: Bottle>, <Framework: Spring>]>
+>>> Framework.objects.filter(language__name='python') 
+<QuerySet [<Framework: Django>, <Framework: Flask>, <Framework: Bottle>]>
+>>> Framework.objects.filter(language__name='Java')   
+<QuerySet [<Framework: Spring>]>
+>>> Framework.objects.filter(language__name__startswith='py') 
+<QuerySet [<Framework: Django>, <Framework: Flask>, <Framework: Bottle>]>
+>>> Language.objects.filter(framework__name='Spring') 
+<QuerySet [<Language: Java>]>
+>>> Language.objects.filter(framework__name='Bottle') 
+<QuerySet [<Language: python>]>
+>>>
+
+>>>  from model_relationsapp.models import Movie,Character
+  File "<console>", line 1
+    from model_relationsapp.models import Movie,Character
+IndentationError: unexpected indent
+>>> from model_relationsapp.models import Movie,Character  
+>>> avengers = Movie(name='Avengers')
+>>> avengers.save()
+>>> captain_america = Movie(name='Captain_America') 
+>>> captain_america.save()
+>>> captain_america.movies.add(avengers) 
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+AttributeError: 'Movie' object has no attribute 'movies'
+>>> captain_america.movie.add(avengers)  
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+AttributeError: 'Movie' object has no attribute 'movie'
+>>> civil_war = Movie(name='Cilvil War')
+>>> civil_war.save()
+>>> thor = Movie(name='Thor Dark World')
+>>> thor.save()
+>>> thor_char = Character(name='Thor')
+>>> thor_char.save()
+>>> thor_char.movie.add(avengers) 
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+AttributeError: 'Character' object has no attribute 'movie'
+>>> thor_char.movies.add(avengers) 
+>>> captain_america.movies.add(civil_war) 
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+AttributeError: 'Movie' object has no attribute 'movies'
+>>> captain_america.movie.add(civil_war)  
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+AttributeError: 'Movie' object has no attribute 'movie'
+>>> thor_char.movies.add(thor)            
+>>> captain_america.movies.create(name='Winter Soldier') 
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+AttributeError: 'Movie' object has no attribute 'movies'
+>>> captain_america.movie.create(name='Winter Soldier')  
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+AttributeError: 'Movie' object has no attribute 'movie'
+>>> thor.movie.create(name='Winter Soldier')            
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+AttributeError: 'Movie' object has no attribute 'movie'
+>>> thor.movies.create(name='Winter Soldier') 
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+AttributeError: 'Movie' object has no attribute 'movies'
+>>> thor_char.movies.create(name='Winter Soldier') 
+<Movie: Winter Soldier>
+>>> Character.objects.filter(movies__name='Civil War') 
+<QuerySet []>
+>>> Character.objects.filter(movies__name='Avenger')   
+<QuerySet []>
+>>> Character.objects.filter(movies__name='Avengers') 
+<QuerySet [<Character: Thor>]>
+>>> Character.objects.filter(Character__name='Captain America') 
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+  File "C:\Users\sivol\Desktop\Django_Prety\guestenv\lib\site-packages\django\db\models\manager.py", line 87, in manager_method     
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Users\sivol\Desktop\Django_Prety\guestenv\lib\site-packages\django\db\models\query.py", line 1476, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+  File "C:\Users\sivol\Desktop\Django_Prety\guestenv\lib\site-packages\django\db\models\query.py", line 1494, in _filter_or_exclude 
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "C:\Users\sivol\Desktop\Django_Prety\guestenv\lib\site-packages\django\db\models\query.py", line 1501, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "C:\Users\sivol\Desktop\Django_Prety\guestenv\lib\site-packages\django\db\models\sql\query.py", line 1613, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "C:\Users\sivol\Desktop\Django_Prety\guestenv\lib\site-packages\django\db\models\sql\query.py", line 1645, in _add_q
+    child_clause, needed_inner = self.build_filter(
+  File "C:\Users\sivol\Desktop\Django_Prety\guestenv\lib\site-packages\django\db\models\sql\query.py", line 1495, in build_filter   
+    lookups, parts, reffed_expression = self.solve_lookup_type(arg, summarize)
+  File "C:\Users\sivol\Desktop\Django_Prety\guestenv\lib\site-packages\django\db\models\sql\query.py", line 1307, in solve_lookup_type
+    _, field, _, lookup_parts = self.names_to_path(lookup_splitted, self.get_meta())
+  File "C:\Users\sivol\Desktop\Django_Prety\guestenv\lib\site-packages\django\db\models\sql\query.py", line 1772, in names_to_path  
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword 'Character' into field. Choices are: id, movies, name
+>>> Movie.objects.filter(Character__name='Captain America')     
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+  File "C:\Users\sivol\Desktop\Django_Prety\guestenv\lib\site-packages\django\db\models\manager.py", line 87, in manager_method     
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Users\sivol\Desktop\Django_Prety\guestenv\lib\site-packages\django\db\models\query.py", line 1476, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+  File "C:\Users\sivol\Desktop\Django_Prety\guestenv\lib\site-packages\django\db\models\query.py", line 1494, in _filter_or_exclude 
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "C:\Users\sivol\Desktop\Django_Prety\guestenv\lib\site-packages\django\db\models\query.py", line 1501, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "C:\Users\sivol\Desktop\Django_Prety\guestenv\lib\site-packages\django\db\models\sql\query.py", line 1613, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "C:\Users\sivol\Desktop\Django_Prety\guestenv\lib\site-packages\django\db\models\sql\query.py", line 1645, in _add_q
+    child_clause, needed_inner = self.build_filter(
+  File "C:\Users\sivol\Desktop\Django_Prety\guestenv\lib\site-packages\django\db\models\sql\query.py", line 1495, in build_filter   
+    lookups, parts, reffed_expression = self.solve_lookup_type(arg, summarize)
+  File "C:\Users\sivol\Desktop\Django_Prety\guestenv\lib\site-packages\django\db\models\sql\query.py", line 1307, in solve_lookup_type
+    _, field, _, lookup_parts = self.names_to_path(lookup_splitted, self.get_meta())
+  File "C:\Users\sivol\Desktop\Django_Prety\guestenv\lib\site-packages\django\db\models\sql\query.py", line 1772, in names_to_path  
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword 'Character' into field. Choices are: character, id, name
+>>> Movie.objects.filter(character__name='Captain America') 
+<QuerySet []>
+>>> captain_america = Character.objects.filter(name = 'Captain America') 
+>>> captain_america = Character.objects.get(name = 'Captain America')    
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+  File "C:\Users\sivol\Desktop\Django_Prety\guestenv\lib\site-packages\django\db\models\manager.py", line 87, in manager_method     
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Users\sivol\Desktop\Django_Prety\guestenv\lib\site-packages\django\db\models\query.py", line 649, in get
+    raise self.model.DoesNotExist(
+model_relationsapp.models.Character.DoesNotExist: Character matching query does not exist.
+>>> captain_america = character.objects.get(name = 'Captain America') 
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+NameError: name 'character' is not defined
+>>> captain_america = Character.objects.get(name = 'Captain America') 
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+  File "C:\Users\sivol\Desktop\Django_Prety\guestenv\lib\site-packages\django\db\models\manager.py", line 87, in manager_method     
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Users\sivol\Desktop\Django_Prety\guestenv\lib\site-packages\django\db\models\query.py", line 649, in get
+    raise self.model.DoesNotExist(
+model_relationsapp.models.Character.DoesNotExist: Character matching query does not exist.
+>>> captain_america = Character.objects.filter(name = 'Captain America')
+>>> captain_america
+<QuerySet []>
+>>> captain_america.movies.all()
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+AttributeError: 'QuerySet' object has no attribute 'movies'
+>>> captain_america.movie.all()  
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+AttributeError: 'QuerySet' object has no attribute 'movie'
+>>> avengers = Movie.objects.get(name='Avengers') 
+>>> avengers
+<Movie: Avengers>
+>>> avengers.character_set.all()
+<QuerySet [<Character: Thor>]>
+>>>

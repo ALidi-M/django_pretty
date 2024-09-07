@@ -1,0 +1,12 @@
+Django == 5.0.6
+djangorestframework
+djangorestframework_simplejwt
+requests
+psycopg2
+isodate
+celery
+django-widget-tweaks
+dj-database-url==2.2.0
+stripe
+pymongo
+python-dotenv
